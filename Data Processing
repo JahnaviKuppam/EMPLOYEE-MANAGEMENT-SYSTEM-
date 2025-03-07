@@ -1,0 +1,33 @@
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
+
+# Load dataset
+def load_data(file_path):
+    return pd.read_csv(file_path)
+
+# Preprocess data
+def preprocess_data(data):
+    # Handling missing values
+    data.dropna(inplace=True)
+    
+    # Splitting features and target
+    X = data.drop(columns=['target'])
+    y = data['target']
+    
+    # Standardizing features
+    scaler = StandardScaler()
+    X_scaled = scaler.fit_transform(X)
+    
+    return X_scaled, y
+
+# Split data into training and testing sets
+def split_data(X, y, test_size=0.2, random_state=42):
+    return train_test_split(X, y, test_size=test_size, random_state=random_state)
+
+if __name__ == "__main__":
+    data = load_data('data/lung_cancer.csv')
+    X, y = preprocess_data(data)
+    X_train, X_test, y_train, y_test = split_data(X, y)
+    print(f"Training data shape: {X_train.shape}")
+    print(f"Testing data shape: {X_test.shape}")
