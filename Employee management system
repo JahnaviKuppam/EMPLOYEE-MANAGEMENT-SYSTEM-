@@ -1,0 +1,57 @@
+import React, { useState } from 'react';
+import { Card, CardContent } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+
+const EmployeeManagementSystem = () => {
+  const [employees, setEmployees] = useState([]);
+  const [name, setName] = useState('');
+  const [role, setRole] = useState('');
+
+  const addEmployee = () => {
+    if (name && role) {
+      const newEmployee = { id: Date.now(), name, role };
+      setEmployees([...employees, newEmployee]);
+      setName('');
+      setRole('');
+    }
+  };
+
+  const removeEmployee = (id) => {
+    setEmployees(employees.filter(employee => employee.id !== id));
+  };
+
+  return (
+    <div className="p-6">
+      <h1 className="text-2xl font-bold mb-4">Employee Management System</h1>
+      <div className="flex gap-4 mb-4">
+        <Input
+          placeholder="Employee Name"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+        />
+        <Input
+          placeholder="Employee Role"
+          value={role}
+          onChange={(e) => setRole(e.target.value)}
+        />
+        <Button onClick={addEmployee}>Add Employee</Button>
+      </div>
+      <div className="grid gap-4">
+        {employees.map(employee => (
+          <Card key={employee.id} className="flex justify-between items-center p-4">
+            <CardContent>
+              <p className="text-lg font-semibold">{employee.name}</p>
+              <p className="text-sm text-gray-600">{employee.role}</p>
+            </CardContent>
+            <Button variant="destructive" onClick={() => removeEmployee(employee.id)}>
+              Remove
+            </Button>
+          </Card>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+export default EmployeeManagementSystem;
